@@ -17,10 +17,10 @@ function Sun() {
       <meshStandardMaterial 
         color="#FDB813" 
         emissive="#FDB813" 
-        emissiveIntensity={0.8}
-        roughness={0.3}
+        emissiveIntensity={0.3}
+        roughness={0.5}
       />
-      <pointLight intensity={2} distance={50} decay={2} />
+      <pointLight intensity={0.8} distance={50} decay={2} />
     </Sphere>
   );
 }
