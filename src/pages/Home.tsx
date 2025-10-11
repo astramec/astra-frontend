@@ -43,12 +43,7 @@ const Home = () => {
             </Button>
           </div>
 
-          <div className="mt-8 text-sm md:text-base text-muted-foreground/80 glass-card px-6 py-4 inline-block rounded-full">
-            <p className="flex items-center justify-center gap-2">
-              <span className="inline-block w-2 h-2 bg-primary rounded-full animate-pulse"></span>
-              Move your mouse left/right to control planet orbits
-            </p>
-          </div>
+          
         </div>
       </div>
 
