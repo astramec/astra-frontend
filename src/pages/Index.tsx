@@ -1,9 +1,13 @@
 import { SpaceScene } from "@/components/SpaceScene";
 import { RegistrationForm } from "@/components/RegistrationForm";
 import { StarField } from "@/components/StarField";
-import { Sparkles } from "lucide-react";
+import { Sparkles, ArrowLeft } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 
 const Index = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="min-h-screen relative overflow-hidden">
       {/* 3D Space Background */}
@@ -14,6 +18,17 @@ const Index = () => {
       
       {/* Main Content */}
       <div className="relative z-10 min-h-screen flex flex-col items-center justify-center px-4 py-12">
+        {/* Back Button */}
+        <div className="absolute top-6 left-6">
+          <Button
+            variant="ghost"
+            onClick={() => navigate("/")}
+            className="text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Back to Home
+          </Button>
+        </div>
         {/* Hero Section */}
         <div className="text-center mb-12 animate-fade-in">
           <div className="inline-flex items-center gap-2 mb-4">
