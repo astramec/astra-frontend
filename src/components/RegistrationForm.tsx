@@ -5,7 +5,8 @@ import { Label } from "@/components/ui/label";
 import { Rocket, Upload } from "lucide-react";
 import { toast } from "sonner";
 import QRCode from "react-qr-code";
-import { LumaCheckoutButton } from "@/components/LumaCheckoutButton";
+import { LumaCheckoutButton } from "./LumaCheckoutButton";
+
 
 export const RegistrationForm = () => {
   const [formData, setFormData] = useState({
