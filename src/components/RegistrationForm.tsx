@@ -27,7 +27,7 @@ export const RegistrationForm = () => {
   const [backendError, setBackendError] = useState<string | null>(null);
   const [tempUserId, setTempUserId] = useState<string | null>(null);
 
-  const upiLink = `upi://pay?pa=aswanthmadhav07@okicici&pn=AstraEvent&am=150&cu=INR`;
+  const upiLink = `upi://pay?pa=sebinkuttan2004-1@okicici&pn=AstraEvent&am=799&cu=INR`;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -157,13 +157,13 @@ export const RegistrationForm = () => {
         <div className="flex flex-col items-center space-y-6">
           <div className="text-center">
             <h3 className="text-xl font-semibold mb-2">Complete Your Payment</h3>
-            <p className="text-sm text-muted-foreground">Scan this QR using <b>GPay</b> or any UPI app to pay ₹150</p>
+            <p className="text-sm text-muted-foreground">Scan this QR using <b>GPay</b> or any UPI app to pay ₹799</p>
           </div>
 
           <QRCode value={upiLink} size={180} />
 
           <div className="text-center">
-            <p className="text-sm text-muted-foreground">UPI ID: <span className="font-medium">yourupiid@oksbi</span></p>
+            <p className="text-sm text-muted-foreground">UPI ID: <span className="font-medium">sebinkuttan2004-1@okicici</span></p>
           </div>
 
           <div className="flex flex-col items-center space-y-3 mt-4 w-full">
