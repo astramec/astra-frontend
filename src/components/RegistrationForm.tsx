@@ -5,6 +5,8 @@ import { Label } from "@/components/ui/label";
 import { Rocket, Upload } from "lucide-react";
 import { toast } from "sonner";
 import QRCode from "react-qr-code";
+import { LumaCheckoutButton } from "@/components/LumaCheckoutButton";
+
 
 export const RegistrationForm = () => {
   const [formData, setFormData] = useState({
@@ -185,21 +187,8 @@ export const RegistrationForm = () => {
             </ol>
           </div>
 
-          <iframe
-            id="luma-iframe"
-            src="https://luma.com/embed/event/evt-pYG3dD55HZHwW6h/simple"
-            width="600"
-            height="450"
-            frameBorder="0"
-            style={{ border: "1px solid #bfcbda88", borderRadius: "8px" }}
-            allow="fullscreen; payment"
-            aria-hidden="false"
-            tabIndex={0}
-          ></iframe>
+          <LumaCheckoutButton/>
 
-          <Button variant="outline" className="mt-2" onClick={() => window.open("https://lu.ma/evt-pYG3dD55HZHwW6h", "_blank")}>
-            Register on Lu.ma
-          </Button>
         </div>
       )}
 
