@@ -7,7 +7,6 @@ import { toast } from "sonner";
 import QRCode from "react-qr-code";
 import { LumaCheckoutButton } from "@/components/LumaCheckoutButton";
 
-
 export const RegistrationForm = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -22,12 +21,15 @@ export const RegistrationForm = () => {
     college: "",
     screenshot: "",
   });
-  const [stage, setStage] = useState<"verify" | "payment" | "final">("verify");
+  const [stage, setStage] = useState<"verify" | "payment" | "final" | "thankyou">("verify");
   const [screenshot, setScreenshot] = useState<File | null>(null);
   const [backendError, setBackendError] = useState<string | null>(null);
   const [tempUserId, setTempUserId] = useState<string | null>(null);
 
   const upiLink = `upi://pay?pa=sebinkuttan2004-1@okicici&pn=AstraEvent&am=799&cu=INR`;
+
+  // Track if Luma checkout was clicked
+  const [lumaClicked, setLumaClicked] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -105,18 +107,26 @@ export const RegistrationForm = () => {
       const data = await response.json();
       if (!response.ok) { toast.error(data.message || "Payment registration failed"); return; }
 
-      toast.success("Registration completed successfully!");
+      toast.success("Payment uploaded successfully!");
       setStage("final");
     } catch (err: any) {
       toast.error(err.message || "Payment submission failed");
     }
   };
 
+  // Detect Luma popup close
   useEffect(() => {
-    if (stage === "final") {
-      document.getElementById("luma-iframe")?.scrollIntoView({ behavior: "smooth" });
+    if (stage === "final" && lumaClicked) {
+      const checkPopupClosed = setInterval(() => {
+        // The Luma checkout button creates an overlay div with class "luma-overlay"
+        const overlay = document.querySelector(".luma-overlay");
+        if (!overlay) {
+          clearInterval(checkPopupClosed);
+          setStage("thankyou"); // show thank you after closing
+        }
+      }, 500);
     }
-  }, [stage]);
+  }, [stage, lumaClicked]);
 
   return (
     <div className="glass-card rounded-2xl p-8 w-full max-w-md mx-auto animate-fade-in">
@@ -127,7 +137,6 @@ export const RegistrationForm = () => {
         <p className="text-muted-foreground">Register for Astra's cosmic event</p>
       </div>
 
-      {/* Stage 1: Verification Form */}
       {stage === "verify" && (
         <form onSubmit={handleVerifySubmit} className="space-y-6">
           {["name", "email", "phone", "college"].map((field) => (
@@ -140,61 +149,42 @@ export const RegistrationForm = () => {
                 placeholder={`Enter your ${field}`}
                 value={(formData as any)[field]}
                 onChange={handleChange}
-                className="bg-input/50 border-border focus:border-primary transition-colors"
               />
               {(errors as any)[field] && <p className="text-destructive text-sm">{(errors as any)[field]}</p>}
             </div>
           ))}
           {backendError && <p className="text-destructive text-sm text-center">{backendError}</p>}
-          <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-6 text-lg rounded-xl shadow-lg hover:shadow-primary/50 transition-all duration-300 animate-pulse-glow">
-            <Rocket className="mr-2 h-5 w-5" /> Let's Register
-          </Button>
+          <Button type="submit"><Rocket className="mr-2" /> Let's Register</Button>
         </form>
       )}
 
-      {/* Stage 2: Payment Upload */}
       {stage === "payment" && (
         <div className="flex flex-col items-center space-y-6">
           <h3 className="text-xl font-semibold mb-2">Complete Your Payment</h3>
-          <p className="text-sm text-muted-foreground">Scan this QR using <b>GPay</b> or any UPI app to pay ₹799</p>
           <QRCode value={upiLink} size={180} />
-          <p className="text-sm text-muted-foreground">UPI ID: <span className="font-medium">sebinkuttan2004-1@okicici</span></p>
-
-          <div className="flex flex-col items-center space-y-3 mt-4 w-full">
-            <Label htmlFor="screenshot">Upload Payment Screenshot</Label>
-            <Input id="screenshot" type="file" accept="image/*" onChange={handleScreenshotUpload} className="cursor-pointer" />
-            {screenshot && <img src={URL.createObjectURL(screenshot)} alt="Payment Screenshot" className="rounded-lg border shadow-md w-56 mt-4" />}
-            {(errors as any).screenshot && <p className="text-destructive text-sm">{(errors as any).screenshot}</p>}
-            <Button variant="outline" onClick={handlePaymentSubmit} className="mt-4">
-              <Upload className="mr-2 h-5 w-5" /> Submit Proof
-            </Button>
-          </div>
+          <Label htmlFor="screenshot">Upload Payment Screenshot</Label>
+          <Input id="screenshot" type="file" accept="image/*" onChange={handleScreenshotUpload} />
+          {screenshot && <img src={URL.createObjectURL(screenshot)} alt="Payment Screenshot" className="rounded-lg border shadow-md w-56 mt-4" />}
+          {(errors as any).screenshot && <p className="text-destructive text-sm">{(errors as any).screenshot}</p>}
+          <Button variant="outline" onClick={handlePaymentSubmit}><Upload className="mr-2" /> Submit Proof</Button>
         </div>
       )}
 
-      {/* Stage 3: Final Luma iframe */}
       {stage === "final" && (
         <div className="flex flex-col items-center space-y-4 w-full">
-          <div className="bg-primary/10 p-4 rounded-lg border border-primary shadow-sm text-center">
-            <h3 className="text-lg font-semibold mb-2">Next Step: Event Registration</h3>
-            <p className="text-sm text-muted-foreground">
-              Thank you for completing the payment! Follow these steps to finalize:
-            </p>
-            <ol className="text-sm text-muted-foreground mt-2 list-decimal list-inside space-y-1">
-              <li>Fill in your details in the Lu.ma registration form.</li>
-              <li>Submit the form to secure your spot.</li>
-              <li>Return here if you want to view registration details.</li>
-            </ol>
+          <p className="text-sm text-muted-foreground text-center">Click the button below to complete registration via Luma:</p>
+          <div onClick={() => setLumaClicked(true)}>
+            <LumaCheckoutButton />
           </div>
-
-          <LumaCheckoutButton/>
-
         </div>
       )}
 
-      <p className="text-xs text-muted-foreground text-center mt-6">
-        By registering, you agree to our terms and conditions
-      </p>
+      {stage === "thankyou" && (
+        <div className="text-center mt-6 p-4 bg-blue-600 rounded-lg">
+          <h3 className="text-lg font-semibold">Thank You!</h3>
+          <p className="text-sm">Your registration is complete.</p>
+        </div>
+      )}
     </div>
   );
 };
