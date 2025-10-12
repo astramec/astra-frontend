@@ -1,0 +1,113 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    /* Space theme - Deep cosmic colors */
+    --background: 240 20% 5%;
+    --foreground: 210 40% 98%;
+
+    --card: 240 15% 8%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 240 15% 8%;
+    --popover-foreground: 210 40% 98%;
+
+    /* Cosmic purple as primary */
+    --primary: 270 70% 60%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Deep space blue as secondary */
+    --secondary: 230 50% 40%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 240 10% 15%;
+    --muted-foreground: 215 20% 65%;
+
+    /* Stellar blue accent */
+    --accent: 200 80% 50%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 240 10% 20%;
+    --input: 240 10% 15%;
+    --ring: 270 70% 60%;
+
+    --radius: 0.75rem;
+
+    /* Custom space gradients */
+    --gradient-cosmic: linear-gradient(135deg, hsl(270 70% 40%), hsl(230 80% 50%));
+    --gradient-nebula: linear-gradient(90deg, hsl(270 70% 40%), hsl(320 70% 50%), hsl(230 80% 50%));
+    --glow-primary: 0 0 40px hsl(270 70% 60% / 0.5);
+    --glow-accent: 0 0 30px hsl(200 80% 50% / 0.4);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+  
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-20px);
+    }
+  }
+  
+  @keyframes pulse-glow {
+    0%, 100% {
+      box-shadow: var(--glow-primary);
+    }
+    50% {
+      box-shadow: 0 0 60px hsl(270 70% 60% / 0.7);
+    }
+  }
+  
+  @keyframes twinkle {
+    0%, 100% {
+      opacity: 0.3;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+  
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+  
+  .animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+  
+  .glass-card {
+    background: hsl(var(--card) / 0.4);
+    backdrop-filter: blur(16px);
+    border: 1px solid hsl(var(--border) / 0.3);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
