@@ -162,7 +162,10 @@ export const RegistrationForm = () => {
       {stage === "payment" && (
         <div className="flex flex-col items-center space-y-6">
           <h3 className="text-xl font-semibold mb-2">Complete Your Payment</h3>
-          <QRCode value={upiLink} size={180} />
+          <div style={{ border: "2px solid white", borderRadius: "8px" }}>
+            <QRCode value={upiLink} size={180} />
+          </div>
+
           <Label htmlFor="screenshot">Upload Payment Screenshot</Label>
           <Input id="screenshot" type="file" accept="image/*" onChange={handleScreenshotUpload} />
           {screenshot && <img src={URL.createObjectURL(screenshot)} alt="Payment Screenshot" className="rounded-lg border shadow-md w-56 mt-4" />}
