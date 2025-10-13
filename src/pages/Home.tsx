@@ -36,7 +36,10 @@ const Home = () => {
             Please <b className="text-red-600 font-bold">DO NOT EXIT OR RELOAD THE PAGE</b> during the registration process.
             <br />
             Fill in your credentials carefully and follow all the steps thoroughly to ensure successful registration.
+            <br />
+            Only Exit the page after completing the payment as well as registration in Luma
           </p>
+
 
           <Button
             onClick={handleCloseAlert}
